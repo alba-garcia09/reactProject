@@ -1,4 +1,3 @@
-// src/components/LoginForm.jsx
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
@@ -52,7 +51,8 @@ const Button = styled.button`
   }
 `;
 
-const LoginForm = () => {
+const RegisterForm = () => {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -68,24 +68,29 @@ const LoginForm = () => {
       setError('La contraseña debe tener al menos 6 caracteres.');
       return;
     }
-    // Here you can add the logic to handle login, e.g., calling an authentication API
-    if (email === 'test@example.com' && password === 'password123') {
-      history.push('/dashboard');
-    } else {
-      setError('Correo electrónico o contraseña incorrectos');
-    }
+    // Here you can add the logic to handle registration, e.g., calling a registration API
+    history.push('/login');
   };
 
   const validateEmail = (email) => {
-    // Simple email validation regex
     const re = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
     return re.test(email);
   };
 
   return (
     <Container>
-      <Title>Iniciar Sesión</Title>
+      <Title>Registrarse</Title>
       <Form onSubmit={handleSubmit}>
+        <div>
+          <Label htmlFor="name">Nombre:</Label>
+          <Input
+            type="text"
+            id="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+        </div>
         <div>
           <Label htmlFor="email">Correo Electrónico:</Label>
           <Input
@@ -107,10 +112,10 @@ const LoginForm = () => {
           />
         </div>
         {error && <ErrorMessage>{error}</ErrorMessage>}
-        <Button type="submit">Iniciar Sesión</Button>
+        <Button type="submit">Registrarse</Button>
       </Form>
     </Container>
   );
 };
 
-export default LoginForm;
+export default RegisterForm;
