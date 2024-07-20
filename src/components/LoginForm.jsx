@@ -1,6 +1,5 @@
-// src/components/LoginForm.jsx
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 // Styled components
@@ -56,7 +55,7 @@ const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -68,16 +67,15 @@ const LoginForm = () => {
       setError('La contraseña debe tener al menos 6 caracteres.');
       return;
     }
-    // Here you can add the logic to handle login, e.g., calling an authentication API
+
     if (email === 'test@example.com' && password === 'password123') {
-      history.push('/dashboard');
+      navigate('/dashboard');
     } else {
       setError('Correo electrónico o contraseña incorrectos');
     }
   };
 
   const validateEmail = (email) => {
-    // Simple email validation regex
     const re = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
     return re.test(email);
   };

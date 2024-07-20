@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 // Styled components
@@ -7,14 +7,15 @@ const Container = styled.div`
   max-width: 400px;
   margin: 0 auto;
   padding: 2rem;
-  border: 1px solid #ccc;
+  border: 1px solid #0A3E27;
   border-radius: 8px;
-  background-color: #f9f9f9;
+  background-color: #E2D1BF;
 `;
 
 const Title = styled.h2`
   text-align: center;
   margin-bottom: 1.5rem;
+  color: #0A3E27;
 `;
 
 const Form = styled.form`
@@ -24,12 +25,13 @@ const Form = styled.form`
 
 const Label = styled.label`
   margin-bottom: 0.5rem;
+  color: #0A3E27;
 `;
 
 const Input = styled.input`
   padding: 0.5rem;
   margin-bottom: 1rem;
-  border: 1px solid #ccc;
+  border: 1px solid #0A3E27;
   border-radius: 4px;
 `;
 
@@ -42,12 +44,12 @@ const Button = styled.button`
   padding: 0.75rem;
   border: none;
   border-radius: 4px;
-  background-color: #007bff;
+  background-color: #CC88FF;
   color: white;
   cursor: pointer;
 
   &:hover {
-    background-color: #0056b3;
+    background-color: #AA66CC;
   }
 `;
 
@@ -56,7 +58,7 @@ const RegisterForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -69,7 +71,7 @@ const RegisterForm = () => {
       return;
     }
     // Here you can add the logic to handle registration, e.g., calling a registration API
-    history.push('/login');
+    navigate('/login');
   };
 
   const validateEmail = (email) => {
