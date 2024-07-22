@@ -10,6 +10,8 @@ const Container = styled.div`
   border: 1px solid #0A3E27;
   border-radius: 8px;
   background-color: #E2D1BF;
+  justify-content: center;
+  
 `;
 
 const Title = styled.h2`
@@ -21,18 +23,22 @@ const Title = styled.h2`
 const Form = styled.form`
   display: flex;
   flex-direction: column;
+  gap: 1rem;
 `;
 
 const Label = styled.label`
   margin-bottom: 0.5rem;
   color: #0A3E27;
+  display: block;
 `;
 
 const Input = styled.input`
-  padding: 0.5rem;
+  padding: 0.75rem;
   margin-bottom: 1rem;
   border: 1px solid #0A3E27;
   border-radius: 4px;
+  width: 100%; 
+  box-sizing: border-box;
 `;
 
 const ErrorMessage = styled.p`
@@ -47,6 +53,7 @@ const Button = styled.button`
   background-color: #CC88FF;
   color: white;
   cursor: pointer;
+  width: 100%;
 
   &:hover {
     background-color: #AA66CC;
