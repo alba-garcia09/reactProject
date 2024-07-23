@@ -2,6 +2,10 @@
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
@@ -13,6 +17,9 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+div{
+  width: 100%;
+}
 a {
   font-weight: 500;
   color: #646cff;
@@ -28,6 +35,7 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  width: 100%;
 }
 
 h1 {
@@ -45,6 +53,7 @@ button {
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
+  /* max-width: 200px; */
 }
 button:hover {
   border-color: #646cff;
@@ -65,4 +74,38 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+.cart {
+  padding: 20px;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.cart-item-image {
+  width: 150px;
+  height: 150px;
+  margin-right: 20px;
+}
+
+.cart-item-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.cart-item-quantity {
+  display: flex;
+  align-items: center;
+}
+
+.cart-item-quantity button {
+  margin: 0 5px;
+}
+
+.cart-summary {
+  margin-top: 20px;
 }
