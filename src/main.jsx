@@ -5,11 +5,10 @@ import AppRouter from './AppRouter.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <>
-    <pages>
+    <div>
       <BrowserRouter>
         <AppRouter />
       </BrowserRouter>
-    </pages>
+    </div>
     </>
 )
-
