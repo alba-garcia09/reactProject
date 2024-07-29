@@ -12,29 +12,27 @@ const Header = styled.header`
   color: white;
 `;
 
-const Pages = styled.header`
+const Pages = styled.main`
   width: 100vw;
   height: 85vh;
-  background-color: blue;
+  background-color: white;
   color: black;
 `;
 
-
-const Footer = styled.header`
+const Footer = styled.footer`
   width: 100vw;
   height: 5vh;
   background-color: black;
   color: white;
 `;
 
-
 ReactDOM.createRoot(document.getElementById('root')).render(
   <>
     <div>
       <BrowserRouter>
         <Header> Estoy en el Header</Header>
-        <Pages> Mi pagina principal
-          {/* <AppRouter /> */}
+        <Pages>
+          <AppRouter />
         </Pages>
         <Footer> Estoy en el footer</Footer>
       </BrowserRouter>
