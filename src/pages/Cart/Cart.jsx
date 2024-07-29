@@ -2,17 +2,19 @@ import { createContext, } from 'react';
 import CartItem from '../../components/CartItem';
 import CartSummary from '../../components/CartSummary';
 import { useCartContext, } from '../../contexts/CartContext';
+import CurrencyButton from '../../components/CurrencyButton';
 
 export const CartContext = createContext();
 
 const Cart = () => {
   localStorage.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBydWViYUB0ZXN0LmNvbSIsImlhdCI6MTcyMTQwODYwNiwiZXhwIjoxNzIxNDk1MDA2fQ.QgitcsD-hXm_xo0qMRL6_wFtbePD7iMIEmXTFhzSIkk";
-  const { cart, addToCart, removeFromCart, updateQuantity, selectToBuy } = useCartContext()
+  const { cart ,addToCart, removeFromCart, updateQuantity, selectToBuy, currency } = useCartContext()
 
   const handleCheckout = () => {
     // Lógica para proceder al pago
     console.log('Proceder al pago');
   };
+  const selectedItems = cart.filter(item => item.selected);
 
   const total = cart
     .filter(item => item.selected)
@@ -36,6 +38,7 @@ const Cart = () => {
   return (
     <div className='container-fluid'>
       <h1>Tu Carrito</h1>
+      <CurrencyButton/>
       <i class="bi bi-arrow-left-square"></i>
       <i class="bi bi-bag"></i>
       <i class="bi bi-bag-check"></i>
@@ -78,7 +81,7 @@ const Cart = () => {
       <i class="bi bi-zoom-in"></i>
       <i class="bi bi-zoom-out"></i>
       <div className="row">
-        <div className="col-12 col-md-6 col-lg-8">
+        <div className="col-12 col-md-8 col-lg-8">
           <div className="cart">
             <button onClick={add}>Añadir</button>
             {cart.map(item => (
@@ -88,12 +91,13 @@ const Cart = () => {
                 onRemove={removeFromCart}
                 onUpdateQuantity={updateQuantity}
                 onSelect={selectToBuy}
+                currency={currency}
               />
             ))}
           </div>
         </div>
-        <div className="col-12 col-md-6 col-lg-4">
-          <CartSummary total={total} onCheckout={handleCheckout} />
+        <div className="col-12 col-md-4 col-lg-4">
+          <CartSummary selectedItems={selectedItems} total={total} onCheckout={handleCheckout} />
         </div>
       </div>
     </div>
