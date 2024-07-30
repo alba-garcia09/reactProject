@@ -112,6 +112,7 @@ const ProductDetail = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [size, setSize] = useState('');
+  const {cartContext, setCartContext } = useCartContext();
 
   useEffect(() => {
     getData({ route: `clothes/byId/${id}` });
@@ -147,6 +148,10 @@ const ProductDetail = () => {
 
   const handleSizeChange = (event) => {
     setSize(event.target.value);
+  };
+
+  const handleContext = () => {
+    setCartContext(data);
   };
 
   if (isLoading) {
@@ -202,8 +207,8 @@ const ProductDetail = () => {
                   <option value="XL">XL</option>
                 </select>
 
-                <button className="btn btn-primary">Añadir al carrito</button>
-              </>
+                <button onClick={handleContext} >Añadir al carrito</button>
+                </>
             )}
           </DetailsColumn>
         </ProductDetails>
