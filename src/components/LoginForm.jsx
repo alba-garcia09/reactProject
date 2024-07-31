@@ -1,35 +1,50 @@
+// src/components/LoginForm.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import useApi from '../hooks/useApi';
 
 // Styled components
 const Container = styled.div`
   max-width: 400px;
   margin: 0 auto;
   padding: 2rem;
-  border: 1px solid #ccc;
+  border: 1px solid #0A3E27;
   border-radius: 8px;
-  background-color: #f9f9f9;
+  background-color: #E2D1BF;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 50vh; 
 `;
 
 const Title = styled.h2`
   text-align: center;
   margin-bottom: 1.5rem;
+  color: #0A3E27;
 `;
 
 const Form = styled.form`
   display: flex;
   flex-direction: column;
+  width: 100%;
+`;
+
+const FormGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
 `;
 
 const Label = styled.label`
   margin-bottom: 0.5rem;
+  color: #0A3E27;
 `;
 
 const Input = styled.input`
   padding: 0.5rem;
-  margin-bottom: 1rem;
-  border: 1px solid #ccc;
+  border: 1px solid #0A3E27;
   border-radius: 4px;
 `;
 
@@ -42,12 +57,12 @@ const Button = styled.button`
   padding: 0.75rem;
   border: none;
   border-radius: 4px;
-  background-color: #007bff;
+  background-color: #CC88FF;
   color: white;
   cursor: pointer;
 
   &:hover {
-    background-color: #0056b3;
+    background-color: #AA66CC;
   }
 `;
 
@@ -56,9 +71,12 @@ const LoginForm = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { postData, error: apiError, isLoading } = useApi(); 
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+
     if (!validateEmail(email)) {
       setError('Por favor ingrese un correo electrónico válido.');
       return;
@@ -68,10 +86,14 @@ const LoginForm = () => {
       return;
     }
 
-    if (email === 'test@example.com' && password === 'password123') {
-      navigate('/dashboard');
-    } else {
-      setError('Correo electrónico o contraseña incorrectos');
+    try {
+      const data = await postData({ route: 'auth/login', body: { email, password }, requiresAuth: false });
+
+      if (data) {
+        navigate('/dashboard'); // Redirige a la página de dashboard después del inicio de sesión
+      }
+    } catch (err) {
+      setError(err.message);
     }
   };
 
@@ -84,7 +106,7 @@ const LoginForm = () => {
     <Container>
       <Title>Iniciar Sesión</Title>
       <Form onSubmit={handleSubmit}>
-        <div>
+        <FormGroup>
           <Label htmlFor="email">Correo Electrónico:</Label>
           <Input
             type="email"
@@ -93,8 +115,8 @@ const LoginForm = () => {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-        </div>
-        <div>
+        </FormGroup>
+        <FormGroup>
           <Label htmlFor="password">Contraseña:</Label>
           <Input
             type="password"
@@ -103,9 +125,11 @@ const LoginForm = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-        </div>
-        {error && <ErrorMessage>{error}</ErrorMessage>}
-        <Button type="submit">Iniciar Sesión</Button>
+        </FormGroup>
+        {(error || apiError) && <ErrorMessage>{error || apiError}</ErrorMessage>}
+        <Button type="submit" disabled={isLoading}>
+          {isLoading ? 'Cargando...' : 'Iniciar Sesión'}
+        </Button>
       </Form>
     </Container>
   );

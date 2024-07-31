@@ -1,6 +1,8 @@
+// src/components/RegisterForm.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import useApi from '../hooks/useApi';
 
 // Styled components
 const Container = styled.div`
@@ -10,8 +12,11 @@ const Container = styled.div`
   border: 1px solid #0A3E27;
   border-radius: 8px;
   background-color: #E2D1BF;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  
+  height: 50vh; 
 `;
 
 const Title = styled.h2`
@@ -23,22 +28,24 @@ const Title = styled.h2`
 const Form = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  width: 100%;
+`;
+
+const FormGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
 `;
 
 const Label = styled.label`
   margin-bottom: 0.5rem;
   color: #0A3E27;
-  display: block;
 `;
 
 const Input = styled.input`
-  padding: 0.75rem;
-  margin-bottom: 1rem;
+  padding: 0.5rem;
   border: 1px solid #0A3E27;
   border-radius: 4px;
-  width: 100%; 
-  box-sizing: border-box;
 `;
 
 const ErrorMessage = styled.p`
@@ -53,7 +60,6 @@ const Button = styled.button`
   background-color: #CC88FF;
   color: white;
   cursor: pointer;
-  width: 100%;
 
   &:hover {
     background-color: #AA66CC;
@@ -64,11 +70,15 @@ const RegisterForm = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [cash, setCash] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { postData, error: apiError, isLoading } = useApi();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+
     if (!validateEmail(email)) {
       setError('Por favor ingrese un correo electrónico válido.');
       return;
@@ -77,8 +87,24 @@ const RegisterForm = () => {
       setError('La contraseña debe tener al menos 6 caracteres.');
       return;
     }
-    // Here you can add the logic to handle registration, e.g., calling a registration API
-    navigate('/login');
+    if (isNaN(cash) || cash <= 0) {
+      setError('Ingrese una cantidad de dinero válida.');
+      return;
+    }
+
+    try {
+      const data = await postData({ 
+        route: 'auth/register', 
+        body: { name, email, password, cash, role: 'cliente' }, 
+        requiresAuth: false 
+      });
+
+      if (data) {
+        navigate('/login'); // Redirige a la página de login después del registro
+      }
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   const validateEmail = (email) => {
@@ -90,7 +116,7 @@ const RegisterForm = () => {
     <Container>
       <Title>Registrarse</Title>
       <Form onSubmit={handleSubmit}>
-        <div>
+        <FormGroup>
           <Label htmlFor="name">Nombre:</Label>
           <Input
             type="text"
@@ -99,8 +125,8 @@ const RegisterForm = () => {
             onChange={(e) => setName(e.target.value)}
             required
           />
-        </div>
-        <div>
+        </FormGroup>
+        <FormGroup>
           <Label htmlFor="email">Correo Electrónico:</Label>
           <Input
             type="email"
@@ -109,8 +135,8 @@ const RegisterForm = () => {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-        </div>
-        <div>
+        </FormGroup>
+        <FormGroup>
           <Label htmlFor="password">Contraseña:</Label>
           <Input
             type="password"
@@ -119,9 +145,21 @@ const RegisterForm = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-        </div>
-        {error && <ErrorMessage>{error}</ErrorMessage>}
-        <Button type="submit">Registrarse</Button>
+        </FormGroup>
+        <FormGroup>
+          <Label htmlFor="cash">Cantidad de Dinero:</Label>
+          <Input
+            type="number"
+            id="cash"
+            value={cash}
+            onChange={(e) => setCash(e.target.value)}
+            required
+          />
+        </FormGroup>
+        {(error || apiError) && <ErrorMessage>{error || apiError}</ErrorMessage>}
+        <Button type="submit" disabled={isLoading}>
+          {isLoading ? 'Cargando...' : 'Registrarse'}
+        </Button>
       </Form>
     </Container>
   );
