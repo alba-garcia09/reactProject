@@ -1,4 +1,3 @@
-// src/hooks/useApi.js
 import { useState } from 'react';
 
 function useApi() {
