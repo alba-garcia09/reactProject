@@ -1,51 +1,49 @@
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
+import { motion } from 'framer-motion';
+import styled from 'styled-components';
 
-const strengthAnimation = keyframes`
-  from { width: 0%; }
-  to { width: 100%; }
-`;
-
+// Styled components
 const BarContainer = styled.div`
   width: 100%;
-  height: 5px;
-  background-color: #ddd;
-  border-radius: 4px;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const ProgressBar = styled(motion.div)`
+  width: 100%;
+  height: 10px;
+  border-radius: 5px;
+  background: ${props => props.color};
+  transition: width 0.5s ease;
+`;
+
+const StrengthLabel = styled.p`
   margin-top: 0.5rem;
+  font-weight: bold;
+  color: ${props => props.color};
 `;
 
-const StrengthBar = styled.div`
-  height: 100%;
-  border-radius: 4px;
-  width: ${(props) => props.width};
-  background-color: ${(props) => props.color};
-  animation: ${strengthAnimation} 0.5s ease-in-out;
-`;
+// Strength levels
+const strengthLevels = {
+  weak: { color: 'red', text: 'Débil' },
+  medium: { color: 'orange', text: 'Medio' },
+  strong: { color: 'green', text: 'Fuerte' },
+};
 
+// PasswordStrengthBar Component
 const PasswordStrengthBar = ({ strength }) => {
-  let color = '#ddd';
-  let width = '0%';
-
-  switch (strength) {
-    case 'strong':
-      color = 'green';
-      width = '100%';
-      break;
-    case 'medium':
-      color = 'orange';
-      width = '60%';
-      break;
-    case 'weak':
-      color = 'red';
-      width = '30%';
-      break;
-    default:
-      break;
-  }
+  const strengthLevel = strengthLevels[strength] || strengthLevels.weak;
 
   return (
     <BarContainer>
-      <StrengthBar width={width} color={color} />
+      <ProgressBar
+        color={strengthLevel.color}
+        initial={{ width: '0%' }}
+        animate={{ width: strength === 'weak' ? '33%' : strength === 'medium' ? '66%' : '100%' }}
+      />
+      <StrengthLabel color={strengthLevel.color}>{strengthLevel.text}</StrengthLabel>
     </BarContainer>
   );
 };

@@ -6,6 +6,7 @@ import useApi from '../hooks/useApi';
 import PasswordStrengthBar from './PasswordStrengthBar';
 import { evaluatePasswordStrength } from '../utils/passwordStrength';
 
+// Estilos para los componentes
 const Container = styled.div`
   max-width: 400px;
   margin: 0 auto;
@@ -91,10 +92,10 @@ const RegisterForm = () => {
     });
 
     if (response) {
-      // Redirect with a delay to allow transition animation
+      // Redirige con un retraso para permitir la animación de transición
       setTimeout(() => {
         navigate('/login');
-      }, 500); // Delay should match the animation duration
+      }, 500); // El retraso debe coincidir con la duración de la animación
     } else {
       setError('Error al registrarse.');
     }
