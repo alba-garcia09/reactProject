@@ -4,6 +4,7 @@ import { AnimatePresence } from 'framer-motion';
 import Home from './pages/Home/Home';
 import LoginPage from './pages/Home/LoginPage';
 import RegisterPage from './pages/Home/RegisterPage';
+import ProductsPage from './pages/Products/ProductsPage';
 import PageTransition from './components/PageTransition';
 
 function AppRouter() {
@@ -13,13 +14,12 @@ function AppRouter() {
     { element: <Home />, path: '/' },
     { element: <LoginPage />, path: '/login' },
     { element: <RegisterPage />, path: '/register' },
+    { element: <ProductsPage />, path: '/products' },
   ]);
 
   return (
-    // Wrap routes with AnimatePresence to handle exit animations
-    <AnimatePresence>
-      {/* Wrap the routes with PageTransition to handle animations */}
-      <PageTransition>
+    <AnimatePresence mode="wait" initial={false}>
+      <PageTransition key={location.pathname}>
         {routes}
       </PageTransition>
     </AnimatePresence>
