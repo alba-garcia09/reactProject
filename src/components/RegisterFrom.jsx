@@ -3,8 +3,9 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import useApi from '../hooks/useApi';
+import PasswordStrengthBar from './PasswordStrengthBar';
+import { evaluatePasswordStrength } from '../utils/passwordStrength';
 
-// Styled components
 const Container = styled.div`
   max-width: 400px;
   margin: 0 auto;
@@ -16,7 +17,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 50vh; 
+  height: 50vh;
 `;
 
 const Title = styled.h2`
@@ -72,44 +73,37 @@ const RegisterForm = () => {
   const [password, setPassword] = useState('');
   const [cash, setCash] = useState('');
   const [error, setError] = useState('');
+  const [passwordStrength, setPasswordStrength] = useState('');
+  const { postData, isLoading } = useApi();
   const navigate = useNavigate();
-  const { postData, error: apiError, isLoading } = useApi();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
 
-    if (!validateEmail(email)) {
-      setError('Por favor ingrese un correo electrónico válido.');
-      return;
-    }
-    if (password.length < 6) {
-      setError('La contraseña debe tener al menos 6 caracteres.');
-      return;
-    }
-    if (isNaN(cash) || cash <= 0) {
-      setError('Ingrese una cantidad de dinero válida.');
+    if (passwordStrength === 'weak') {
+      setError('La contraseña es demasiado débil.');
       return;
     }
 
-    try {
-      const data = await postData({ 
-        route: 'auth/register', 
-        body: { name, email, password, cash, role: 'cliente' }, 
-        requiresAuth: false 
-      });
+    const response = await postData({
+      route: 'auth/register',
+      body: { name, email, password, role: 'client', cash },
+    });
 
-      if (data) {
-        navigate('/login'); // Redirige a la página de login después del registro
-      }
-    } catch (err) {
-      setError(err.message);
+    if (response) {
+      // Redirect with a delay to allow transition animation
+      setTimeout(() => {
+        navigate('/login');
+      }, 500); // Delay should match the animation duration
+    } else {
+      setError('Error al registrarse.');
     }
   };
 
-  const validateEmail = (email) => {
-    const re = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-    return re.test(email);
+  const handlePasswordChange = (e) => {
+    const newPassword = e.target.value;
+    setPassword(newPassword);
+    setPasswordStrength(evaluatePasswordStrength(newPassword));
   };
 
   return (
@@ -142,12 +136,13 @@ const RegisterForm = () => {
             type="password"
             id="password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={handlePasswordChange}
             required
           />
+          <PasswordStrengthBar strength={passwordStrength} />
         </FormGroup>
         <FormGroup>
-          <Label htmlFor="cash">Cantidad de Dinero:</Label>
+          <Label htmlFor="cash">Dinero Inicial:</Label>
           <Input
             type="number"
             id="cash"
@@ -156,7 +151,7 @@ const RegisterForm = () => {
             required
           />
         </FormGroup>
-        {(error || apiError) && <ErrorMessage>{error || apiError}</ErrorMessage>}
+        {error && <ErrorMessage>{error}</ErrorMessage>}
         <Button type="submit" disabled={isLoading}>
           {isLoading ? 'Cargando...' : 'Registrarse'}
         </Button>
