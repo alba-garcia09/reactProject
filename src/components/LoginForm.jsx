@@ -1,4 +1,3 @@
-// src/components/LoginForm.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -7,6 +6,8 @@ import useApi from '../hooks/useApi';
 // Styled components
 const Container = styled.div`
   max-width: 400px;
+  width: 400px; /* Fixed width for the square */
+  height: 400px; /* Fixed height for the square */
   margin: 0 auto;
   padding: 2rem;
   border: 1px solid #0A3E27;
@@ -16,7 +17,10 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 50vh; 
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 `;
 
 const Title = styled.h2`
@@ -78,11 +82,11 @@ const LoginForm = () => {
     setError('');
 
     if (!validateEmail(email)) {
-      setError('Por favor ingrese un correo electrónico válido.');
+      setError('Please enter a valid email address.');
       return;
     }
     if (password.length < 6) {
-      setError('La contraseña debe tener al menos 6 caracteres.');
+      setError('Password must be at least 6 characters long.');
       return;
     }
 
@@ -90,7 +94,7 @@ const LoginForm = () => {
       const data = await postData({ route: 'auth/login', body: { email, password }, requiresAuth: false });
 
       if (data) {
-        navigate('/dashboard'); // Redirige a la página de dashboard después del inicio de sesión
+        navigate('/dashboard'); // Redirects to the dashboard page after login
       }
     } catch (err) {
       setError(err.message);
@@ -104,10 +108,10 @@ const LoginForm = () => {
 
   return (
     <Container>
-      <Title>Iniciar Sesión</Title>
+      <Title>Login</Title>
       <Form onSubmit={handleSubmit}>
         <FormGroup>
-          <Label htmlFor="email">Correo Electrónico:</Label>
+          <Label htmlFor="email">Email Address:</Label>
           <Input
             type="email"
             id="email"
@@ -117,7 +121,7 @@ const LoginForm = () => {
           />
         </FormGroup>
         <FormGroup>
-          <Label htmlFor="password">Contraseña:</Label>
+          <Label htmlFor="password">Password:</Label>
           <Input
             type="password"
             id="password"
@@ -128,7 +132,7 @@ const LoginForm = () => {
         </FormGroup>
         {(error || apiError) && <ErrorMessage>{error || apiError}</ErrorMessage>}
         <Button type="submit" disabled={isLoading}>
-          {isLoading ? 'Cargando...' : 'Iniciar Sesión'}
+          {isLoading ? 'Loading...' : 'Login'}
         </Button>
       </Form>
     </Container>
