@@ -23,7 +23,7 @@ function useApi() {
         throw new Error('Error al obtener los datos');
       }
       const responseAsJson = await response.json();
-      setData(responseAsJson); 
+      setData(responseAsJson);
     } catch (err) {
       setError(err.message || 'Error al obtener los datos');
     } finally {
