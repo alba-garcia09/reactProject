@@ -1,5 +1,6 @@
 import { useRoutes } from 'react-router-dom';
-import Home from './pages/Home/Home.jsx'
+import Home from './pages/Home/Home'
+import ProductDetail from './pages/ProductDetail/ProductDetail'
 
 function AppRouter() {
   return useRoutes(
@@ -7,6 +8,10 @@ function AppRouter() {
       {
         element: <Home />,
         path: '/',
+      },
+      {
+        element: <ProductDetail/>,
+        path: '/productDetail/:id',
       },
     ],
   )

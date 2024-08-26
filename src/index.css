@@ -43,6 +43,17 @@ a {
   text-decoration: inherit;
 }
 
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 a:hover {
   color: var(--secundaryColor);
 }
@@ -101,3 +112,6 @@ button:hover {
   color:#CC88FF;
   transform: scale(1.1)
 }
+
+
+
