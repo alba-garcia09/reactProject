@@ -17,7 +17,7 @@ function useApi() {
     setIsLoading(true);
     setTimeout(async () => {
       try {
-        const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjI5LzA3QGFsYmEiLCJpYXQiOjE3MjIyNjk2NjEsImV4cCI6MTcyMjM1NjA2MX0.x1duCZYQphIz5sqlRpgxTPXgcOUapTX5zBK4hLF13Wk'
+        const token = localStorage.token
         const response = await fetch(`https://backend-irby.onrender.com/${route}`, {
           headers: {
             'Authorization': `${token}`
