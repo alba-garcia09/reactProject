@@ -59,7 +59,7 @@ function useApi() {
         setToken(responseAsJson.token);
       }
 
-      return responseAsJson;
+      setData(responseAsJson); 
     } catch (err) {
       setError(err.message || 'Error al realizar la solicitud');
       return null;
