@@ -5,8 +5,7 @@ import useApi from '../../hooks/useApi';
 const transformRowUrl = (rowUrl) => {
   const splitedRowUrl = rowUrl.split('/');
   const imgId = splitedRowUrl[5];
-  const url = `https://drive.google.com/thumbnail?id=${imgId}&sz=w1000`;
-  return url;
+  return `https://drive.google.com/thumbnail?id=${imgId}&sz=w1000`;
 };
 
 const Container = styled.div`
@@ -70,6 +69,12 @@ const PriceInput = styled.input`
   padding: 0.5rem;
   border: 1px solid #ccc;
   border-radius: 4px;
+`;
+
+const LoadingMessage = styled.p`
+  text-align: center;
+  font-size: 1.2rem;
+  color: #555;
 `;
 
 const ProductsPage = () => {
@@ -137,7 +142,7 @@ const ProductsPage = () => {
           <option value="">Todas las categorías</option>
           <option value="category1">Categoría 1</option>
           <option value="category2">Categoría 2</option>
-          {/* Añadir más categorías según tu necesidad */}
+          {/* Añadir más categorias según tu necesidad */}
         </Filter>
         <PriceRangeContainer>
           <label>Precio Mín:</label>
@@ -154,29 +159,25 @@ const ProductsPage = () => {
           />
         </PriceRangeContainer>
       </FiltersContainer>
-      {isLoading ? (
-        <p>Cargando...</p> // Mensaje de carga simple
-      ) : (
-        <ProductGrid>
-          {filteredProducts.length > 0 ? (
-            filteredProducts.map(product => (
-              <ProductCard key={product._id}>
-                <h2>{product.name}</h2>
-                <ProductImage src={transformRowUrl(product.image[0])} alt={product.name} />
-                <p>{product.description}</p>
-                <p>Precio: ${product.price}</p>
-                <p>Stock: {product.stock}</p>
-                <p>Marca: {product.brand}</p>
-                <p>Estilo: {product.style}</p>
-                <p>Tipo: {product.type}</p>
-                <p>Color: {product.color}</p>
-              </ProductCard>
-            ))
-          ) : (
-            <p>No hay productos disponibles</p>
-          )}
-        </ProductGrid>
-      )}
+      <ProductGrid>
+        {filteredProducts.length > 0 ? (
+          filteredProducts.map(product => (
+            <ProductCard key={product._id}>
+              <h2>{product.name}</h2>
+              <ProductImage src={transformRowUrl(product.image[0])} alt={product.name} />
+              <p>{product.description}</p>
+              <p>Precio: ${product.price}</p>
+              <p>Stock: {product.stock}</p>
+              <p>Marca: {product.brand}</p>
+              <p>Estilo: {product.style}</p>
+              <p>Tipo: {product.type}</p>
+              <p>Color: {product.color}</p>
+            </ProductCard>
+          ))
+        ) : (
+          <p>No hay productos disponibles</p>
+        )}
+      </ProductGrid>
     </Container>
   );
 };
