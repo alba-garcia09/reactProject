@@ -1,6 +1,8 @@
 import { useRoutes } from 'react-router-dom';
-import Home from './pages/Home/Home'
-import ProductDetail from './pages/ProductDetail/ProductDetail'
+import Home from './pages/Home/Home.jsx';
+import Cart from './pages/Cart/Cart.jsx';
+import Checkout from './pages/Cart/Checkout.jsx';
+import ProductDetail from './pages/ProductDetail/ProductDetail.jsx';
 
 function AppRouter() {
   return useRoutes(
@@ -8,6 +10,14 @@ function AppRouter() {
       {
         element: <Home />,
         path: '/',
+      },
+      {
+        element: <Cart />,
+        path: '/cart',
+      },
+      {
+        element: <Checkout />,
+        path: '/checkout',
       },
       {
         element: <ProductDetail/>,

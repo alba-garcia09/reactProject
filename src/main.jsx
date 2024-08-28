@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import styled from 'styled-components';
 import Header from '../src/components/Header/Header.jsx';
+import { CartProvider } from './contexts/CartContext.jsx'
 
 const Pages = styled.main`
   margin-top: 10vh;
@@ -32,6 +33,7 @@ const Footer = styled.footer`
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <BrowserRouter>
+  <CartProvider>
     <Header></Header>
     <Pages>
       <AppRouter />
@@ -40,5 +42,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       All rights reserved - alpal
       <i className="bi bi-c-circle" style={{ padding: "0 10px" }}></i>
     </Footer>
+    </CartProvider>
   </BrowserRouter>
 );
