@@ -1,6 +1,4 @@
-// cambio
-// src/components/LoginForm.jsx
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import useApi from '../hooks/useApi';
@@ -72,7 +70,13 @@ const LoginForm = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const { postData, error: apiError, isLoading } = useApi(); 
+  const { postData, error: apiError, isLoading, data } = useApi(); 
+
+  useEffect(()=>{
+    if(data?.token){
+      navigate('/home');
+    }
+  }, [data])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -88,11 +92,7 @@ const LoginForm = () => {
     }
 
     try {
-      const data = await postData({ route: 'auth/login', body: { email, password }, requiresAuth: false });
-
-      if (data) {
-        navigate('/dashboard'); // Redirige a la página de dashboard después del inicio de sesión
-      }
+      postData({ route: 'auth/login', body: { email, password }, requiresAuth: false });
     } catch (err) {
       setError(err.message);
     }

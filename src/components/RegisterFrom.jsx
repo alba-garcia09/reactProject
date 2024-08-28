@@ -1,5 +1,3 @@
-// cambio
-// src/components/RegisterForm.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -75,10 +73,15 @@ const RegisterForm = () => {
   const [password, setPassword] = useState('');
   const [cash, setCash] = useState('');
   const [error, setError] = useState('');
-  const [passwordStrength, setPasswordStrength] = useState('');
+  const [passwordStrength, setPasswordStrength] = useState(''); // Initially empty
   const { postData, isLoading } = useApi();
   const navigate = useNavigate();
 
+  useEffect(()=>{
+    if(data?.token){
+      navigate('/home');
+    }
+  }, [data])
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -87,18 +90,22 @@ const RegisterForm = () => {
       return;
     }
 
-    const response = await postData({
-      route: 'auth/register',
-      body: { name, email, password, role: 'client', cash },
-    });
+    try {
+      const response = await postData({
+        route: 'auth/register',
+        body: { name, email, password, role: 'client', cash },
+      });
 
-    if (response) {
-      // Redirige con un retraso para permitir la animación de transición
-      setTimeout(() => {
+      console.log('Server response:', response);
+
+      if (response && response.success) {
         navigate('/login');
-      }, 500); // El retraso debe coincidir con la duración de la animación
-    } else {
-      setError('Error al registrarse.');
+      } else {
+        setError('Error during registration.');
+      }
+    } catch (err) {
+      console.error('Error during registration:', err);
+      setError('Error during registration.');
     }
   };
 
