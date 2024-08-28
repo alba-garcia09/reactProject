@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import useApi from '../hooks/useApi';
@@ -74,7 +74,7 @@ const RegisterForm = () => {
   const [cash, setCash] = useState('');
   const [error, setError] = useState('');
   const [passwordStrength, setPasswordStrength] = useState(''); // Initially empty
-  const { postData, isLoading } = useApi();
+  const { postData, isLoading, data } = useApi();
   const navigate = useNavigate();
 
   useEffect(()=>{
@@ -82,6 +82,7 @@ const RegisterForm = () => {
       navigate('/home');
     }
   }, [data])
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -91,18 +92,11 @@ const RegisterForm = () => {
     }
 
     try {
-      const response = await postData({
+      postData({
         route: 'auth/register',
         body: { name, email, password, role: 'client', cash },
       });
 
-      console.log('Server response:', response);
-
-      if (response && response.success) {
-        navigate('/login');
-      } else {
-        setError('Error during registration.');
-      }
     } catch (err) {
       console.error('Error during registration:', err);
       setError('Error during registration.');
