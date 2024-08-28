@@ -1,6 +1,4 @@
 // cambio
-import React from 'react';
-import { motion } from 'framer-motion';
 import styled from 'styled-components';
 
 // Styled components
@@ -12,7 +10,7 @@ const BarContainer = styled.div`
   align-items: center;
 `;
 
-const ProgressBar = styled(motion.div)`
+const ProgressBar = styled.div`
   width: 100%;
   height: 10px;
   border-radius: 5px;

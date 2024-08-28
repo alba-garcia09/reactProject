@@ -79,7 +79,7 @@ const RegisterForm = () => {
 
   useEffect(()=>{
     if(data?.token){
-      navigate('/home');
+      navigate('/');
     }
   }, [data])
 

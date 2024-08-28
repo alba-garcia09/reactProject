@@ -15,7 +15,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 50vh; 
+  height: 50vh;
 `;
 
 const Title = styled.h2`
@@ -70,11 +70,11 @@ const LoginForm = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const { postData, error: apiError, isLoading, data } = useApi(); 
+  const { postData, error: apiError, isLoading, data } = useApi();
 
   useEffect(()=>{
     if(data?.token){
-      navigate('/home');
+      navigate('/');
     }
   }, [data])
 
