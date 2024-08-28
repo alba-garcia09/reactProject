@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import { useParams } from 'react-router-dom';
 import useApi from '../../hooks/useApi';
@@ -73,7 +73,7 @@ const Arrow = styled.div`
 `;
 
 const Modal = styled.div`
-  display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
+  display: ${({ $isopen }) => ($isopen ? 'flex' : 'none')};
   justify-content: center;
   align-items: center;
   position: fixed;
@@ -112,13 +112,6 @@ const ColorIndicator = styled.div`
   margin-left: 10px;
 `;
 
-const transformRowUrl = (rowUrl) => {
-  const splitedRowUrl = rowUrl.split('/');
-  const imgId = splitedRowUrl[5];
-  const url = `https://drive.google.com/thumbnail?id=${imgId}&sz=w1000`;
-  return url;
-};
-
 const ProductDetail = () => {
   const { id } = useParams();
   const { data, getData, error, isLoading } = useApi();
@@ -132,6 +125,8 @@ const ProductDetail = () => {
   }, []);
 
   useEffect(() => {
+    console.log(data);
+
     if (data && data.image.length > 0) {
       setCurrentImageIndex(0);
     }
@@ -163,20 +158,12 @@ const ProductDetail = () => {
     setSize(event.target.value);
   };
 
-  // const handleContext = () => {
-  //   setCartContext(data);
-  // };
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>{error}</div>;
-  }
 
   return (
     <>
+    { isLoading && <div>Loading...</div> }
+    { error && <div>{error}</div> }
+
       <GlobalStyle isModalOpen={isModalOpen} />
       <Container>
         <ProductDetails className="container">
@@ -184,7 +171,7 @@ const ProductDetail = () => {
             {data && data.image.length > 0 && (
               <>
                 <ProductImage
-                  src={transformRowUrl(data.image[currentImageIndex])}
+                  src={data.image[currentImageIndex]}
                   alt={data.name}
                   onClick={handleImageClick}
                 />
@@ -233,10 +220,10 @@ const ProductDetail = () => {
           </DetailsColumn>
         </ProductDetails>
 
-        <Modal isOpen={isModalOpen} onClick={handleModalClick}>
+        <Modal $isopen={isModalOpen} onClick={handleModalClick}>
           <ModalContent onClick={(e) => e.stopPropagation()}>
             <ModalImage
-              src={data ? transformRowUrl(data.image[currentImageIndex]) : ''}
+              src={data ? data.image[currentImageIndex] : ''}
               alt={data ? data.name : ''}
             />
             {data && data.image.length > 1 && (

@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 
 function useApi() {
@@ -5,30 +6,64 @@ function useApi() {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  async function getData({ route }) {
+  // Función para transformar la URL
+  const transformRowUrl = (rowUrl) => {
+    const splitedRowUrl = rowUrl.split('/');
+    const imgId = splitedRowUrl[5];
+    const url = `https://drive.google.com/thumbnail?id=${imgId}&sz=w1000`;
+    return url;
+  };
+
+  async function getData({ route, method='GET', body }) {
     setIsLoading(true);
+    setTimeout(async () => {
       try {
+        const token = localStorage.token
         const response = await fetch(`https://backend-irby.onrender.com/${route}`, {
           headers: {
-            'Authorization': `${localStorage.token}`
-          }
+            'Authorization': `${token}`
+          },
+          method,
+          body: body && JSON.stringify(body),
         });
-
         if (!response.ok) {
           setError('Error al obtener los datos');
           setIsLoading(false);
           return;
         }
         const responseAsJson = await response.json();
-        setData(responseAsJson);
-        setIsLoading(false);
+        if (responseAsJson.token) {
+          localStorage.token = responseAsJson.token
+        }
+
+        let responseToConvert;
+        if (Array.isArray(responseAsJson)) {
+          responseToConvert = responseAsJson
+        } else {
+          responseToConvert = [responseAsJson]
+        }
+        // Transformar las URLs de las imágenes antes de actualizar el estado
+        const transformedData = responseToConvert.map(item => {
+          if (item.image) {
+            return {
+              ...item,
+              image: item.image.map(imgUrl => transformRowUrl(imgUrl))  // Aplicar la transformación a cada URL de imagen
+            };
+          }
+          return item;
+        });
+
+
+        setData(Array.isArray(responseAsJson) ? transformedData : transformedData[0]);
       } catch (err) {
         setError('Error al obtener los datos');
+      } finally {
         setIsLoading(false);
       }
+    }, 1000);
   }
 
-  return { data, getData, error, isLoading };
+  return { data, getData, error, isLoading};
 }
 
 export default useApi;
