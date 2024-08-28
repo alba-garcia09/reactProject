@@ -7,38 +7,13 @@ import CurrencyButton from '../../components/CurrencyButton';
 export const CartContext = createContext();
 
 const Cart = () => {
-  localStorage.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBydWViYUB0ZXN0LmNvbSIsImlhdCI6MTcyMTQwODYwNiwiZXhwIjoxNzIxNDk1MDA2fQ.QgitcsD-hXm_xo0qMRL6_wFtbePD7iMIEmXTFhzSIkk";
-  const { cart ,addToCart, removeFromCart, updateQuantity, selectToBuy, currency } = useCartContext()
+  localStorage.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBydWViYTNAdGVzdC5jb20iLCJpYXQiOjE3MjQ4NjE2MzAsImV4cCI6MTcyNDk0ODAzMH0.a4-7bZFPjUlDKrAnNjf9WG9gVOVDUYPkIAUveaXYZDo";
+  const { cart, addToCart, removeFromCart, updateQuantity, selectToBuy, currency } = useCartContext()
 
-  const handleCheckout = () => {
-    // Lógica para proceder al pago
-    console.log('Proceder al pago');
-  };
-  const selectedItems = cart.filter(item => item.selected);
-
-  const total = cart
-    .filter(item => item.selected)
-    .reduce((sum, item) => sum + item.price * item.quantity, 0);
-
-  function add() {
-    const product = {
-      _id: 'inventado',
-      type: "Shirt",
-      color: "White",
-      name: "White-Shirt",
-      price: 50,
-      stock: 22,
-      description: "Inventado",
-      quantity: 1,
-      id: 3,
-      image: "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1691675073-M1205R_01_b1_s3_a1_1_m94.jpg?crop=1.00xw:0.668xh;0,0.141xh&resize=980:*"
-    }
-    addToCart({ product })
-  }
   return (
     <div className='container-fluid'>
       <h1>Tu Carrito</h1>
-      <CurrencyButton/>
+      <CurrencyButton />
       <i class="bi bi-arrow-left-square"></i>
       <i class="bi bi-bag"></i>
       <i class="bi bi-bag-check"></i>
@@ -81,13 +56,12 @@ const Cart = () => {
       <i class="bi bi-zoom-in"></i>
       <i class="bi bi-zoom-out"></i>
       <div className="row">
-        <div className="col-12 col-md-8 col-lg-8">
+        <div className="col-12 col-md-8 col-lg-6">
           <div className="cart">
-            <button onClick={add}>Añadir</button>
             {cart.map(item => (
               <CartItem
                 key={item.id}
-                item={item}
+                item={item} // Si `selected` es `undefined`, se establece como `true`
                 onRemove={removeFromCart}
                 onUpdateQuantity={updateQuantity}
                 onSelect={selectToBuy}
@@ -96,8 +70,8 @@ const Cart = () => {
             ))}
           </div>
         </div>
-        <div className="col-12 col-md-4 col-lg-4">
-          <CartSummary selectedItems={selectedItems} total={total} onCheckout={handleCheckout} />
+        <div className="col-12 col-md-3 col-lg-5">
+          <CartSummary />
         </div>
       </div>
     </div>
