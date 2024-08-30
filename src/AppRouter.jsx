@@ -1,11 +1,9 @@
 // src/AppRouter.jsx
 import { useRoutes, useLocation } from 'react-router-dom';
-import { AnimatePresence } from 'framer-motion';
 import Home from './pages/Home/Home';
 import LoginPage from './pages/Home/LoginPage';
 import RegisterPage from './pages/Home/RegisterPage';
 import ProductsPage from './pages/Products/ProductsPage';
-import PageTransition from './components/PageTransition';
 
 function AppRouter() {
   const location = useLocation();
@@ -18,11 +16,9 @@ function AppRouter() {
   ]);
 
   return (
-    <AnimatePresence mode="wait" initial={false}>
-      <PageTransition key={location.pathname}>
+      <>
         {routes}
-      </PageTransition>
-    </AnimatePresence>
+      </>
   );
 }
 
