@@ -65,12 +65,6 @@ const PriceInput = styled.input`
   border-radius: 4px;
 `;
 
-const LoadingMessage = styled.p`
-  text-align: center;
-  font-size: 1.2rem;
-  color: #555;
-`;
-
 const ProductsPage = () => {
   const { data, getData, isLoading, error } = useApi();
   const [searchTerm, setSearchTerm] = useState('');
