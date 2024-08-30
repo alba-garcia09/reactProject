@@ -43,6 +43,7 @@ function useApi() {
         } else {
           responseToConvert = [responseAsJson]
         }
+
         // Transformar las URLs de las imágenes antes de actualizar el estado
         const transformedData = responseToConvert.map(item => {
           if (item.image) {
