@@ -9,28 +9,11 @@ export const CartContext = createContext();
 const Cart = () => {
   const { cart, addToCart, removeFromCart, updateQuantity, selectToBuy, currency, setCart } = useCartContext()
 
-  const add = () => {
-    const product = {
-      _id: 'inventado',
-      type: "Shirt",
-      color: "White",
-      name: "White-Shirt",
-      price: 50,
-      stock: 22,
-      description: "Inventado",
-      quantity: 1,
-      id: 3,
-      selected: true,
-      image: "https://hips.hearstapps.com/..."
-    }
-    addToCart({ product });
-  };
 
   return (
     <div className='container-fluid'>
       <h1>Tu Carrito</h1>
       <CurrencyButton />
-      <button onClick={add}>Añadir</button>
       {/* <i class="bi bi-arrow-left-square"></i>
       <i class="bi bi-bag"></i>
       <i class="bi bi-bag-check"></i>
