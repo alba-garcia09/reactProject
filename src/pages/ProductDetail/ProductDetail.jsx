@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import useApi from '../../hooks/useApi';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import { useCartContext } from '../../contexts/CartContext'
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -118,7 +119,7 @@ const ProductDetail = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [size, setSize] = useState('');
-  // const {cartContext, setCartContext } = useCartContext();
+  const { addToCart } = useCartContext()
 
   useEffect(() => {
     getData({ route: `clothes/byId/${id}` });
@@ -158,6 +159,21 @@ const ProductDetail = () => {
     setSize(event.target.value);
   };
 
+    const handleAddToCart = () => {
+    if (!size) {
+      alert('Por favor seleccione una talla')
+      return
+    }
+    const productToAdd = {
+      ...data,
+      size,
+      quantity: 1
+    };
+
+    addToCart({ product: productToAdd });
+    alert('Producto añadido con éxito')
+
+  }
 
   return (
     <>
@@ -214,7 +230,7 @@ const ProductDetail = () => {
                   <p className='littleText'>Consulta las condiciones aqui</p>
                 </div>
 
-                <button>Añadir al carrito</button>
+                <button onClick={handleAddToCart}>Añadir al carrito</button>
               </>
             )}
           </DetailsColumn>
