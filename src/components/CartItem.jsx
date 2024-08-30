@@ -53,14 +53,14 @@ const CartItem = ({ item, onRemove, onUpdateQuantity, onSelect, currency }) => {
           onClick={() => onUpdateQuantity(item._id, item.quantity - 1)}
           disabled={item.quantity <= 1}
         >
-          <i class="bi bi-bag-dash"></i>
+          <i className="bi bi-bag-dash"></i>
         </button>
         <span>{item.quantity}</span>
         <button
           onClick={() => onUpdateQuantity(item._id, item.quantity + 1)}
           disabled={item.quantity >= item.stock}
         >
-          <i class="bi bi-bag-plus"></i>
+          <i className="bi bi-bag-plus"></i>
         </button>
       </div>
 

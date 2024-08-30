@@ -52,7 +52,7 @@ const Checkout = () => {
   useEffect(() => {
     if (data) {
       // Navegar a una página de éxito o mostrar un mensaje de éxito
-      navigate('/success', { state: { ticket: data.ticket, movement: data.movement }});
+      navigate('/success', { state: { ticket: data.ticket, movements: data.movements }});
     }
   }, [data, navigate]);
 

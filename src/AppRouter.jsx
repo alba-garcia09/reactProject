@@ -5,6 +5,7 @@ import Checkout from './pages/Cart/Checkout.jsx';
 import ProductDetail from './pages/ProductDetail/ProductDetail.jsx';
 import LoginPage from './pages/Home/LoginPage.jsx';
 import RegisterPage from './pages/Home/RegisterPage.jsx';
+import Success from './pages/Cart/Success.jsx';
 import ProductsPage from './pages/Products/ProductsPage';
 
 function AppRouter() {
@@ -28,6 +29,10 @@ function AppRouter() {
       },
       { element: <LoginPage />, path: '/login' },
       { element: <RegisterPage />, path: '/register' },
+      {
+        element: <Success />,
+        path: '/success',
+      },
       { element: <ProductsPage />, path: '/products' },
     ],
   )
