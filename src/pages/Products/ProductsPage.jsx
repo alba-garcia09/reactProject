@@ -2,12 +2,6 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import useApi from '../../hooks/useApi';
 
-const transformRowUrl = (rowUrl) => {
-  const splitedRowUrl = rowUrl.split('/');
-  const imgId = splitedRowUrl[5];
-  return `https://drive.google.com/thumbnail?id=${imgId}&sz=w1000`;
-};
-
 const Container = styled.div`
   padding: 2rem;
 `;
@@ -164,7 +158,7 @@ const ProductsPage = () => {
           filteredProducts.map(product => (
             <ProductCard key={product._id}>
               <h2>{product.name}</h2>
-              <ProductImage src={transformRowUrl(product.image[0])} alt={product.name} />
+              <ProductImage src={product.image[0]} alt={product.name} />
               <p>{product.description}</p>
               <p>Precio: ${product.price}</p>
               <p>Stock: {product.stock}</p>
