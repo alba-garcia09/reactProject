@@ -150,9 +150,9 @@ const OverlayContainer = styled.div`
   justify-content: center;
   align-items: center;
   color: white;
-  background-color: rgba(0, 0, 0, 0.5); // Filtro oscuro sobre la imagen
-  opacity: 0; // Oculto inicialmente
-  transition: opacity 0.3s ease-in-out; // Transición suave
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
 
   h2 {
     margin-bottom: 20px;
@@ -186,7 +186,7 @@ function Home() {
   const { data: lastClothes, getData: getLastClothes, error: lastClothesError, isLoading: lastClothesLoading } = useApi();
   const { data: cheapestClothes, getData: getCheapestClothes, error: cheapestClothesError, isLoading: cheapestClothesLoading } = useApi();
 
-  // Imágenes de estilos importadas
+
   const styleImages = [
     { name: 'Streetwear', image: Streetwear },
     { name: 'Elegant', image: Elegant },

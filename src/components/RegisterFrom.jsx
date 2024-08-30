@@ -74,7 +74,7 @@ const RegisterForm = () => {
   const [cash, setCash] = useState('');
   const [error, setError] = useState('');
   const [passwordStrength, setPasswordStrength] = useState(''); // Initially empty
-  const { postData, isLoading, data } = useApi();
+  const { getData, isLoading, data } = useApi();
   const navigate = useNavigate();
 
   useEffect(()=>{
@@ -92,8 +92,9 @@ const RegisterForm = () => {
     }
 
     try {
-      postData({
+      getData({
         route: 'auth/register',
+        method: 'POST',
         body: { name, email, password, role: 'client', cash },
       });
 

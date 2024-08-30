@@ -70,7 +70,7 @@ const LoginForm = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const { postData, error: apiError, isLoading, data } = useApi();
+  const { getData, error: apiError, isLoading, data } = useApi();
 
   useEffect(()=>{
     if(data?.token){
@@ -92,7 +92,7 @@ const LoginForm = () => {
     }
 
     try {
-      postData({ route: 'auth/login', body: { email, password }, requiresAuth: false });
+      getData({ route: 'auth/login',method: 'POST', body: { email, password } });
     } catch (err) {
       setError(err.message);
     }
