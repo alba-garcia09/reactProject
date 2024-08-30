@@ -21,6 +21,7 @@ function useApi() {
         const token = localStorage.token
         const response = await fetch(`https://backend-irby.onrender.com/${route}`, {
           headers: {
+            'Content-Type': 'application/json',
             'Authorization': `${token}`
           },
           method,
