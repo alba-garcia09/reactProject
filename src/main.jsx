@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-import './index.css'; // Asegúrate de que el CSS global esté importado
+import './index.css';
 import AppRouter from './AppRouter.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
