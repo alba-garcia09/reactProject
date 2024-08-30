@@ -57,7 +57,7 @@ const CartSummary = () => {
             onChange={(e) => setDiscountCode(e.target.value)}
             className="form-control mb-2"
           />
-          <button onClick={handleApplyDiscount} className="btn btn-primary">Aplicar Descuento</button>
+          <button onClick={handleApplyDiscount} className="main-button">Aplicar Descuento</button>
         </div>
         {discountAmount > 0 && (
           <div className="discount-info">

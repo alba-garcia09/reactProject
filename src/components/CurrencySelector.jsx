@@ -36,7 +36,7 @@ const CurrencySelector = () => {
 
   return (
     <div className="currency-selector">
-      <button className="btn btn-secondary" onClick={() => setShowModal(true)}>
+      <button className="main-button" onClick={() => setShowModal(true)}>
         {currencySymbols[currency]}
       </button>
 

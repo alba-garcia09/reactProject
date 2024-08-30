@@ -1,5 +1,4 @@
-
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function useApi() {
   const [data, setData] = useState(null);
@@ -14,18 +13,15 @@ function useApi() {
     return url;
   };
 
-  async function getData({ route, method='GET', body }) {
+  function getData({ route }) {
     setIsLoading(true);
     setTimeout(async () => {
       try {
         const token = localStorage.token
         const response = await fetch(`https://backend-98l2.onrender.com/${route}`, {
           headers: {
-            'Content-Type': 'application/json',
             'Authorization': `${token}`
-          },
-          method,
-          body: body && JSON.stringify(body),
+          }
         });
         if (!response.ok) {
           setError('Error al obtener los datos');
@@ -33,18 +29,9 @@ function useApi() {
           return;
         }
         const responseAsJson = await response.json();
-        if (responseAsJson.token) {
-          localStorage.token = responseAsJson.token
-        }
 
-        let responseToConvert;
-        if (Array.isArray(responseAsJson)) {
-          responseToConvert = responseAsJson
-        } else {
-          responseToConvert = [responseAsJson]
-        }
         // Transformar las URLs de las imágenes antes de actualizar el estado
-        const transformedData = responseToConvert.map(item => {
+        const transformedData = responseAsJson.map(item => {
           if (item.image) {
             return {
               ...item,
@@ -54,17 +41,16 @@ function useApi() {
           return item;
         });
 
-
-        setData(Array.isArray(responseAsJson) ? transformedData : transformedData[0]);
+        setData(transformedData);
+        setIsLoading(false);
       } catch (err) {
         setError('Error al obtener los datos');
-      } finally {
         setIsLoading(false);
       }
     }, 1000);
   }
 
-  return { data, getData, error, isLoading};
+  return { data, getData, error, isLoading };
 }
 
 export default useApi;

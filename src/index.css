@@ -64,14 +64,28 @@ a:hover {
 
 h1 {
   font-size: 2.5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 12px;
 }
 
 h2 {
   font-size: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 h3 {
   font-size: 1em;
+}
+
+h4 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 12px;
 }
 
 p {
@@ -186,6 +200,9 @@ form input:focus {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .main-button:hover {
@@ -204,23 +221,28 @@ form input:focus {
 
 .cart {
   padding: 20px;
-  max-width: 90%;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: #f9f9f9;
+  max-width: 100%;
   align-items: center;
   justify-content: center;
-  box-shadow: 4px 2px 2px #ccc;
   margin-bottom: 12px;
+  margin-top: 12px;
+  box-shadow: 0 0px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
 }
 
 .cart-summary {
-  background-color: whitesmoke;
-  border-radius: 8px;
-  border: 1px solid #ccc;
   align-items: center;
   justify-content: center;
-  box-shadow: 4px 2px 2px #CCc;
+  margin-top: 12px;
+  padding: 20px;
+  max-width: 100%;
+  box-shadow: 0 0px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.discount-section {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 /* Base styles for mobile */
@@ -310,19 +332,6 @@ form input:focus {
   color: #CC88FF;
   transition: border-color 0.25s;
   transition: color 0.25s;
-}
-
-.cart-summary {
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: #f9f9f9;
-  max-width: 90%;
-}
-
-.cart-summary h3,
-.cart-summary h4 {
-  margin: 0 0 10px;
 }
 
 .cart-summary-item {

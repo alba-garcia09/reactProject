@@ -1,4 +1,4 @@
-import { createContext, } from 'react';
+import { createContext, useEffect, } from 'react';
 import CartItem from '../../components/CartItem';
 import CartSummary from '../../components/CartSummary';
 import { useCartContext, } from '../../contexts/CartContext';
@@ -7,14 +7,31 @@ import CurrencyButton from '../../components/CurrencyButton';
 export const CartContext = createContext();
 
 const Cart = () => {
-  localStorage.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBydWViYTNAdGVzdC5jb20iLCJpYXQiOjE3MjQ4NjE2MzAsImV4cCI6MTcyNDk0ODAzMH0.a4-7bZFPjUlDKrAnNjf9WG9gVOVDUYPkIAUveaXYZDo";
-  const { cart, addToCart, removeFromCart, updateQuantity, selectToBuy, currency } = useCartContext()
+  const { cart, addToCart, removeFromCart, updateQuantity, selectToBuy, currency, setCart } = useCartContext()
+
+  const add = () => {
+    const product = {
+      _id: 'inventado',
+      type: "Shirt",
+      color: "White",
+      name: "White-Shirt",
+      price: 50,
+      stock: 22,
+      description: "Inventado",
+      quantity: 1,
+      id: 3,
+      selected: true,
+      image: "https://hips.hearstapps.com/..."
+    }
+    addToCart({ product });
+  };
 
   return (
     <div className='container-fluid'>
       <h1>Tu Carrito</h1>
       <CurrencyButton />
-      <i class="bi bi-arrow-left-square"></i>
+      <button onClick={add}>Añadir</button>
+      {/* <i class="bi bi-arrow-left-square"></i>
       <i class="bi bi-bag"></i>
       <i class="bi bi-bag-check"></i>
       <i class="bi bi-bag-dash"></i>
@@ -54,9 +71,9 @@ const Cart = () => {
       <i class="bi bi-wallet2"></i>
       <i class="bi bi-x-square"></i>
       <i class="bi bi-zoom-in"></i>
-      <i class="bi bi-zoom-out"></i>
+      <i class="bi bi-zoom-out"></i> */}
       <div className="row">
-        <div className="col-12 col-md-8 col-lg-6">
+        <div className="col-12 col-md-8 col-lg-7">
           <div className="cart">
             {cart.map(item => (
               <CartItem
@@ -70,7 +87,7 @@ const Cart = () => {
             ))}
           </div>
         </div>
-        <div className="col-12 col-md-3 col-lg-5">
+        <div className="col-12 col-md-4 col-lg-5">
           <CartSummary />
         </div>
       </div>
