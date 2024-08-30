@@ -5,9 +5,11 @@ import useApi from '../hooks/useApi';
 import PasswordStrengthBar from './PasswordStrengthBar';
 import { evaluatePasswordStrength } from '../utils/passwordStrength';
 
-// Estilos para los componentes
+// Styled components
 const Container = styled.div`
   max-width: 400px;
+  width: 100%;
+  height: 400px; /* Adjusted for square */
   margin: 0 auto;
   padding: 2rem;
   border: 1px solid #0A3E27;
@@ -17,7 +19,10 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 50vh;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 `;
 
 const Title = styled.h2`
@@ -87,7 +92,7 @@ const RegisterForm = () => {
     e.preventDefault();
 
     if (passwordStrength === 'weak') {
-      setError('La contraseña es demasiado débil.');
+      setError('The password is too weak.');
       return;
     }
 
@@ -112,10 +117,10 @@ const RegisterForm = () => {
 
   return (
     <Container>
-      <Title>Registrarse</Title>
+      <Title>Register</Title>
       <Form onSubmit={handleSubmit}>
         <FormGroup>
-          <Label htmlFor="name">Nombre:</Label>
+          <Label htmlFor="name">Name:</Label>
           <Input
             type="text"
             id="name"
@@ -125,7 +130,7 @@ const RegisterForm = () => {
           />
         </FormGroup>
         <FormGroup>
-          <Label htmlFor="email">Correo Electrónico:</Label>
+          <Label htmlFor="email">Email Address:</Label>
           <Input
             type="email"
             id="email"
@@ -135,7 +140,7 @@ const RegisterForm = () => {
           />
         </FormGroup>
         <FormGroup>
-          <Label htmlFor="password">Contraseña:</Label>
+          <Label htmlFor="password">Password:</Label>
           <Input
             type="password"
             id="password"
@@ -146,7 +151,7 @@ const RegisterForm = () => {
           <PasswordStrengthBar strength={passwordStrength} />
         </FormGroup>
         <FormGroup>
-          <Label htmlFor="cash">Dinero Inicial:</Label>
+          <Label htmlFor="cash">Initial Cash:</Label>
           <Input
             type="number"
             id="cash"
@@ -157,7 +162,7 @@ const RegisterForm = () => {
         </FormGroup>
         {error && <ErrorMessage>{error}</ErrorMessage>}
         <Button type="submit" disabled={isLoading}>
-          {isLoading ? 'Cargando...' : 'Registrarse'}
+          {isLoading ? 'Loading...' : 'Register'}
         </Button>
       </Form>
     </Container>
