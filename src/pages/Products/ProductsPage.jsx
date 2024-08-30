@@ -79,9 +79,9 @@ const ProductsPage = () => {
   const [maxPrice, setMaxPrice] = useState('');
   const [filteredProducts, setFilteredProducts] = useState([]);
 
-  // useEffect(() => {
-  //   getData({ route: 'clothes/all' });
-  // }, [getData]);
+  useEffect(() => {
+    getData({ route: 'clothes/all' });
+  }, []);
 
   useEffect(() => {
     if (data) {
