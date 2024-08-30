@@ -19,7 +19,7 @@ function useApi() {
     setTimeout(async () => {
       try {
         const token = localStorage.token
-        const response = await fetch(`https://backend-irby.onrender.com/${route}`, {
+        const response = await fetch(`https://backend-98l2.onrender.com/${route}`, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `${token}`
@@ -43,6 +43,7 @@ function useApi() {
         } else {
           responseToConvert = [responseAsJson]
         }
+
         // Transformar las URLs de las imágenes antes de actualizar el estado
         const transformedData = responseToConvert.map(item => {
           if (item.image) {
