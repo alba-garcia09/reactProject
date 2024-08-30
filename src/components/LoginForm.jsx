@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import useApi from '../hooks/useApi';
@@ -21,6 +21,7 @@ const Container = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  height: 50vh;
 `;
 
 const Title = styled.h2`
@@ -75,7 +76,13 @@ const LoginForm = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const { postData, error: apiError, isLoading } = useApi(); 
+  const { getData, error: apiError, isLoading, data } = useApi();
+
+  useEffect(()=>{
+    if(data?.token){
+      navigate('/');
+    }
+  }, [data])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -91,11 +98,7 @@ const LoginForm = () => {
     }
 
     try {
-      const data = await postData({ route: 'auth/login', body: { email, password }, requiresAuth: false });
-
-      if (data) {
-        navigate('/dashboard'); // Redirects to the dashboard page after login
-      }
+      getData({ route: 'auth/login',method: 'POST', body: { email, password } });
     } catch (err) {
       setError(err.message);
     }

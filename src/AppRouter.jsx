@@ -1,25 +1,36 @@
-// src/AppRouter.jsx
-import { useRoutes, useLocation } from 'react-router-dom';
-import Home from './pages/Home/Home';
-import LoginPage from './pages/Home/LoginPage';
-import RegisterPage from './pages/Home/RegisterPage';
+import { useRoutes } from 'react-router-dom';
+import Home from './pages/Home/Home.jsx';
+import Cart from './pages/Cart/Cart.jsx';
+import Checkout from './pages/Cart/Checkout.jsx';
+import ProductDetail from './pages/ProductDetail/ProductDetail.jsx';
+import LoginPage from './pages/Home/LoginPage.jsx';
+import RegisterPage from './pages/Home/RegisterPage.jsx';
 import ProductsPage from './pages/Products/ProductsPage';
 
 function AppRouter() {
-  const location = useLocation();
-
-  const routes = useRoutes([
-    { element: <Home />, path: '/' },
-    { element: <LoginPage />, path: '/login' },
-    { element: <RegisterPage />, path: '/register' },
-    { element: <ProductsPage />, path: '/products' },
-  ]);
-
-  return (
-      <>
-        {routes}
-      </>
-  );
+  return useRoutes(
+    [
+      {
+        element: <Home />,
+        path: '/',
+      },
+      {
+        element: <Cart />,
+        path: '/cart',
+      },
+      {
+        element: <Checkout />,
+        path: '/checkout',
+      },
+      {
+        element: <ProductDetail/>,
+        path: '/productDetail/:id',
+      },
+      { element: <LoginPage />, path: '/login' },
+      { element: <RegisterPage />, path: '/register' },
+      { element: <ProductsPage />, path: '/products' },
+    ],
+  )
 }
 
 export default AppRouter;

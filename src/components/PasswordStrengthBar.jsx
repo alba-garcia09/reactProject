@@ -1,4 +1,4 @@
-import React from 'react';
+// cambio
 import styled from 'styled-components';
 
 // Password strength bar container
@@ -6,6 +6,15 @@ const BarContainer = styled.div`
   width: 100%;
   height: 20px;
   background-color: #e0e0e0;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const ProgressBar = styled.div`
+  width: 100%;
+  height: 10px;
   border-radius: 5px;
   position: relative;
   margin: 10px 0;
