@@ -119,6 +119,10 @@ const ProductsPage = () => {
     return <Container><p>Error al cargar los productos: {error}</p></Container>;
   }
 
+  if (isLoading) {
+    return <Container><p>Cargando productos</p></Container>;
+  }
+
   return (
     <Container>
       <h1>Productos</h1>
