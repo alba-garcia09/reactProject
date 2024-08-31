@@ -181,10 +181,21 @@ const ResponsiveCarousel = styled(Carousel)`
   }
 `;
 
+const ProductsBanner = styled.div`
+width: 100%;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+padding: 50px;
+`;
+
+
 function Home() {
   const navigate = useNavigate();
   const { data: lastClothes, getData: getLastClothes, error: lastClothesError, isLoading: lastClothesLoading } = useApi();
   const { data: cheapestClothes, getData: getCheapestClothes, error: cheapestClothesError, isLoading: cheapestClothesLoading } = useApi();
+  const { data: allClothes, getData: getAllClothes, error: allClothesError, isLoading: allClothesLoading } = useApi();
 
 
   const styleImages = [
@@ -196,18 +207,18 @@ function Home() {
     { name: 'Trendy', image: Trendy },
   ];
 
-
   useEffect(() => {
     getLastClothes({ route: `clothes/lastClothes` });
     getCheapestClothes({ route: `clothes/cheapestClothes` });
+    getAllClothes({ route: `clothes/all` });
   }, []);
 
-  if (lastClothesLoading || cheapestClothesLoading) {
+  if (lastClothesLoading || cheapestClothesLoading || allClothesLoading) {
     return <div>Loading...</div>;
   }
 
-  if (lastClothesError || cheapestClothesError) {
-    return <div>Error: {lastClothesError?.message || cheapestClothesError?.message}</div>;
+  if (lastClothesError || cheapestClothesError || allClothesError) {
+    return <div>Error: {lastClothesError?.message || cheapestClothesError?.message || allClothesError?.message}</div>;
   }
 
   const handleProductClick = (id) => {
@@ -217,6 +228,19 @@ function Home() {
   const handleSpotifyClick = () => {
     window.location.href = 'https://open.spotify.com/playlist/37i9dQZEVXbNFJfN1Vw8d9';
   };
+
+
+  const allTypesArray = [];
+
+  if (allClothes && Array.isArray(allClothes)) {
+    const allTypes = allClothes.map((item) => item.type);
+
+    allTypes.forEach((type) => {
+      if (!allTypesArray.includes(type)) {
+        allTypesArray.push(type);
+      }
+    });
+  }
 
   return (
     <>
@@ -322,6 +346,19 @@ function Home() {
           <button className="blackButton" onClick={handleSpotifyClick}>Accede a nuestra lista</button>
         </TextContainer>
       </ColorBanner>
+
+      <ProductsBanner>
+        <h1>Nuestros productos</h1>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          {allTypesArray.map((type, index) => (
+            <p onClick={() => navigate(`/products/type?${type}`)} key={index} style={{ margin: '5px 0' }}>
+              {type}
+            </p>
+          ))}
+        </div>
+        <button style={{ margin: '20px 0px 0px 0px' }} className="blackButton" onClick={() => navigate('/products')}>Quiero conocerlos todos</button>
+        <></>
+      </ProductsBanner>
 
       <InspirationBanner>
         <LogoContainer>
