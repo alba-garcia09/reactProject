@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import usePostApi from '../../hooks/usePostApi';
 
 const Checkout = () => {
-  const { cart } = useCartContext();
+  const { cart, setCart } = useCartContext();
   const { data, postData, error, isLoading } = usePostApi();
   const navigate = useNavigate();
 
@@ -51,10 +51,14 @@ const Checkout = () => {
 
   useEffect(() => {
     if (data) {
-      // Navegar a una página de éxito o mostrar un mensaje de éxito
+      // Vaciar el carrito
+      setCart([]);  // Limpia el carrito en el estado
+      localStorage.removeItem('cart');  // También limpia el carrito en el localStorage
+
+      // Navegar a la página de éxito
       navigate('/success', { state: { ticket: data.ticket, movements: data.movements }});
     }
-  }, [data, navigate]);
+  }, [data, navigate, setCart]);
 
   return (
     <div className="checkout">
