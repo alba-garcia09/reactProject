@@ -7,7 +7,7 @@ export function CartProvider({ children }) {
   const [cart, setCart] = useState([]);
   const [checkoutItems, setCheckoutItems] = useState([]);
   const navigate = useNavigate();
-  const [currency, setCurrency] = useState("USD");
+  const [currency, setCurrency] = useState("EUR");
 
   // Cargar carrito desde localStorage al iniciar
   useEffect(() => {
@@ -23,45 +23,73 @@ export function CartProvider({ children }) {
   }, [cart]);
 
   function addToCart({ product }) {
-    const newCart = [...cart];
-    product.selected = true;
-    newCart.push(product);
+    const existingProductIndex = cart.findIndex(
+      (item) => item._id === product._id && item.size === product.size
+    );
+
+    let newCart;
+
+    if (existingProductIndex !== -1) {
+      // El producto ya está en el carrito, incrementamos la cantidad
+      newCart = [...cart];
+      newCart[existingProductIndex].quantity += product.quantity;
+    } else {
+      // El producto no está en el carrito, lo añadimos
+      newCart = [...cart, product];
+    }
+
     setCart(newCart);
+
+    // Actualizar el localStorage después de añadir o modificar el carrito
+    const newCartIds = newCart.map(item => item._id);
+    localStorage.cart = JSON.stringify(newCartIds);
   }
 
   function removeFromCart(_id) {
-    const updatedCart = cart.filter(item => item._id !== _id);
-    setCart(updatedCart);
+    setCart(cart.filter((item) => item._id !== _id));
   }
 
   function updateQuantity(_id, quantity) {
-    const updatedCart = cart.map(item =>
-      item._id === _id ? { ...item, quantity: Math.max(quantity, 1) } : item
+    setCart(
+      cart.map((item) =>
+        item._id === _id ? { ...item, quantity: Math.max(quantity, 1) } : item
+      )
     );
-    setCart(updatedCart);
   }
 
   function selectToBuy(_id) {
-    const updatedCart = cart.map(item =>
-      item._id === _id ? { ...item, selected: !item.selected } : item
+    setCart(
+      cart.map((item) =>
+        item._id === _id ? { ...item, selected: !item.selected } : item
+      )
     );
-    setCart(updatedCart);
   }
 
   function changeCurrency(newCurrency) {
     setCurrency(newCurrency);
-    // Opcional: guardar la moneda en localStorage
-    localStorage.setItem('currency', newCurrency);
   }
 
   function checkout() {
-    const selectedItems = cart.filter(item => item.selected);
+    const selectedItems = cart.filter((item) => item.selected);
     setCheckoutItems(selectedItems);
-    navigate('/checkout');
+    navigate("/checkout");
   }
 
   return (
-    <CartContext.Provider value={{ cart, checkoutItems, currency, addToCart, removeFromCart, updateQuantity, selectToBuy, changeCurrency, checkout }}>
+    <CartContext.Provider
+      value={{
+        cart,
+        checkoutItems,
+        currency,
+        addToCart,
+        removeFromCart,
+        updateQuantity,
+        selectToBuy,
+        changeCurrency,
+        checkout,
+        setCart,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );
