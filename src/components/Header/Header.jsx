@@ -119,7 +119,7 @@ function Header() {
   return (
     <HeaderContainer>
       <Column className="col-md-3 col-sm-5">
-        <MyLogo src={Logo} alt="Logo" />
+        <MyLogo onClick={() => navigate('/')} src={Logo} alt="Logo" />
       </Column>
 
       <Column className="col-md-6 d-none d-md-flex">
