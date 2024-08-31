@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useNavigate, useLocation } from 'react-router-dom';  // Import useLocation
+import { useNavigate, useLocation } from 'react-router-dom';
 import useApi from '../../hooks/useApi';
 
 const Container = styled.div`
@@ -75,21 +75,20 @@ const ProductsPage = () => {
   const [maxPrice, setMaxPrice] = useState('');
   const [filteredProducts, setFilteredProducts] = useState([]);
   const navigate = useNavigate();
-  const location = useLocation();  // To obtain the query string from the URL
+  const location = useLocation();
 
   useEffect(() => {
     getData({ route: 'clothes/all' });
   }, []);
 
-  // Check if there is a query string in the URL
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const brand = queryParams.get('brand');
     if (brand) {
-      setSelectedBrand(brand); // Set the selected brand based on the query string
+      setSelectedBrand(brand.toLowerCase());
     }
   }, [location.search]);
-  // http://localhost:5173/products?brand=nike
+
   useEffect(() => {
     if (data) {
       let filtered = data;
@@ -102,7 +101,7 @@ const ProductsPage = () => {
 
       if (selectedBrand) {
         filtered = filtered.filter(product =>
-          product.brand === selectedBrand
+          product.brand.toLowerCase() === selectedBrand
         );
       }
 
@@ -123,19 +122,26 @@ const ProductsPage = () => {
   }, [data, searchTerm, selectedBrand, minPrice, maxPrice]);
 
   if (error) {
-    return <Container><p>Error loading products: {error}</p></Container>;
+    return (
+      <Container>
+        <p>Error loading products: {error}</p>
+      </Container>
+    );
   }
 
   if (isLoading) {
-    return <Container><p>Loading products</p></Container>;
+    return (
+      <Container>
+        <p>Loading products...</p>
+      </Container>
+    );
   }
 
   const handleProductClick = (productId) => {
-    navigate(`/products/${productId}`);
+    navigate(`/productDetail/${productId}`);
   };
 
-  // Create a list of unique brands
-  const uniqueBrands = [...new Set(data?.map(product => product.brand))];
+  const uniqueBrands = [...new Set(data?.map(product => product.brand.toLowerCase()))];
 
   return (
     <Container>
@@ -153,7 +159,9 @@ const ProductsPage = () => {
         >
           <option value="">All Brands</option>
           {uniqueBrands.map((brand, index) => (
-            <option key={index} value={brand}>{brand}</option>
+            <option key={index} value={brand}>
+              {brand}
+            </option>
           ))}
         </Filter>
         <PriceRangeContainer>
@@ -174,8 +182,8 @@ const ProductsPage = () => {
       <ProductGrid>
         {filteredProducts.length > 0 ? (
           filteredProducts.map(product => (
-            <ProductCard 
-              key={product._id} 
+            <ProductCard
+              key={product._id}
               onClick={() => handleProductClick(product._id)}
             >
               <h2>{product.name}</h2>
