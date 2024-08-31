@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { useNavigate, useLocation } from 'react-router-dom';  // Import useLocation
 import useApi from '../../hooks/useApi';
 
 const Container = styled.div`
@@ -19,6 +20,7 @@ const ProductCard = styled.div`
   background-color: #fff;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
 
   &:hover {
     transform: scale(1.05);
@@ -68,15 +70,26 @@ const PriceInput = styled.input`
 const ProductsPage = () => {
   const { data, getData, isLoading, error } = useApi();
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedBrand, setSelectedBrand] = useState('');
   const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const navigate = useNavigate();
+  const location = useLocation();  // To obtain the query string from the URL
 
   useEffect(() => {
     getData({ route: 'clothes/all' });
   }, []);
 
+  // Check if there is a query string in the URL
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const brand = queryParams.get('brand');
+    if (brand) {
+      setSelectedBrand(brand); // Set the selected brand based on the query string
+    }
+  }, [location.search]);
+  // http://localhost:5173/products?brand=nike
   useEffect(() => {
     if (data) {
       let filtered = data;
@@ -87,9 +100,9 @@ const ProductsPage = () => {
         );
       }
 
-      if (selectedCategory) {
+      if (selectedBrand) {
         filtered = filtered.filter(product =>
-          product.type === selectedCategory
+          product.brand === selectedBrand
         );
       }
 
@@ -107,43 +120,50 @@ const ProductsPage = () => {
 
       setFilteredProducts(filtered);
     }
-  }, [data, searchTerm, selectedCategory, minPrice, maxPrice]);
+  }, [data, searchTerm, selectedBrand, minPrice, maxPrice]);
 
   if (error) {
-    return <Container><p>Error al cargar los productos: {error}</p></Container>;
+    return <Container><p>Error loading products: {error}</p></Container>;
   }
 
   if (isLoading) {
-    return <Container><p>Cargando productos</p></Container>;
+    return <Container><p>Loading products</p></Container>;
   }
+
+  const handleProductClick = (productId) => {
+    navigate(`/products/${productId}`);
+  };
+
+  // Create a list of unique brands
+  const uniqueBrands = [...new Set(data?.map(product => product.brand))];
 
   return (
     <Container>
-      <h1>Productos</h1>
+      <h1>Products</h1>
       <SearchBar
         type="text"
-        placeholder="Buscar productos..."
+        placeholder="Search products..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
       <FiltersContainer>
         <Filter
-          value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
+          value={selectedBrand}
+          onChange={(e) => setSelectedBrand(e.target.value)}
         >
-          <option value="">Todas las categorías</option>
-          <option value="category1">Categoría 1</option>
-          <option value="category2">Categoría 2</option>
-          {/* Añadir más categorias según tu necesidad */}
+          <option value="">All Brands</option>
+          {uniqueBrands.map((brand, index) => (
+            <option key={index} value={brand}>{brand}</option>
+          ))}
         </Filter>
         <PriceRangeContainer>
-          <label>Precio Mín:</label>
+          <label>Min Price:</label>
           <PriceInput
             type="number"
             value={minPrice}
             onChange={(e) => setMinPrice(e.target.value)}
           />
-          <label>Precio Máx:</label>
+          <label>Max Price:</label>
           <PriceInput
             type="number"
             value={maxPrice}
@@ -154,20 +174,23 @@ const ProductsPage = () => {
       <ProductGrid>
         {filteredProducts.length > 0 ? (
           filteredProducts.map(product => (
-            <ProductCard key={product._id}>
+            <ProductCard 
+              key={product._id} 
+              onClick={() => handleProductClick(product._id)}
+            >
               <h2>{product.name}</h2>
               <ProductImage src={product.image[0]} alt={product.name} />
               <p>{product.description}</p>
-              <p>Precio: ${product.price}</p>
+              <p>Price: ${product.price}</p>
               <p>Stock: {product.stock}</p>
-              <p>Marca: {product.brand}</p>
-              <p>Estilo: {product.style}</p>
-              <p>Tipo: {product.type}</p>
+              <p>Brand: {product.brand}</p>
+              <p>Style: {product.style}</p>
+              <p>Type: {product.type}</p>
               <p>Color: {product.color}</p>
             </ProductCard>
           ))
         ) : (
-          <p>No hay productos disponibles</p>
+          <p>No products available</p>
         )}
       </ProductGrid>
     </Container>
