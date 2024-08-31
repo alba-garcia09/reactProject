@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import useApi from '../../hooks/useApi';
+import LoadingOverlay from '../../components/Spinner/spinner.jsx';
 
 const Container = styled.div`
   padding: 2rem;
@@ -65,6 +66,26 @@ const PriceInput = styled.input`
   border-radius: 4px;
 `;
 
+const OverlayContainer = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+
+  h2 {
+    margin-bottom: 20px;
+  }
+`;
+
 const ProductsPage = () => {
   const { data, getData, isLoading, error } = useApi();
   const [searchTerm, setSearchTerm] = useState('');
@@ -114,7 +135,7 @@ const ProductsPage = () => {
   }
 
   if (isLoading) {
-    return <Container><p>Cargando productos</p></Container>;
+    return <LoadingOverlay isLoading={true} message="Cargando datos..." />;
   }
 
   return (

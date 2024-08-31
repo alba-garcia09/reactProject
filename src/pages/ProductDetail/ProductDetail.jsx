@@ -5,6 +5,7 @@ import useApi from '../../hooks/useApi';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { useCartContext } from '../../contexts/CartContext'
+import LoadingOverlay from '../../components/Spinner/spinner.jsx';
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -113,6 +114,26 @@ const ColorIndicator = styled.div`
   margin-left: 10px;
 `;
 
+const OverlayContainer = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+
+  h2 {
+    margin-bottom: 20px;
+  }
+`;
+
 const ProductDetail = () => {
   const { id } = useParams();
   const { data, getData, error, isLoading } = useApi();
@@ -159,7 +180,7 @@ const ProductDetail = () => {
     setSize(event.target.value);
   };
 
-    const handleAddToCart = () => {
+  const handleAddToCart = () => {
     if (!size) {
       alert('Por favor seleccione una talla')
       return
@@ -177,8 +198,8 @@ const ProductDetail = () => {
 
   return (
     <>
-    { isLoading && <div>Loading...</div> }
-    { error && <div>{error}</div> }
+      {isLoading && <LoadingOverlay isLoading={true}/>}
+      {error && <div>{error}</div>}
 
       <GlobalStyle isModalOpen={isModalOpen} />
       <Container>
